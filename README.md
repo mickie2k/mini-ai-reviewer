@@ -33,8 +33,6 @@ frontend/src
 eval/                      evaluation dataset and results
 ```
 
----
-
 ## Quick start
 
 ### With Docker Compose
@@ -164,8 +162,6 @@ curl -X POST http://localhost:8080/lint \
 ### `GET /health`
 
 Liveness check. Returns `{"status": "ok"}`.
-
----
 
 ## AI Review's Flow
 
