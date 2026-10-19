@@ -32,7 +32,6 @@ export function CommentCard({ languageExtension, comment }: { languageExtension:
                 <p className="text-right"><span className="font-bold">Line:</span> {sameLine(comment.startLine, comment.endLine) ? comment.startLine : `${comment.startLine} to ${comment.endLine}`}</p>
             </div>
 
-            {/* <span className='text-base'>Explanation</span> */}
             <p className="text-sm text-neutral-100">{comment.explanation}</p>
             <div className="mt-2 bg-neutral-800 flex flex-col rounded overflow-hidden">
                 <span className="text-xs text-neutral-100 p-2">Suggestion Fix</span>

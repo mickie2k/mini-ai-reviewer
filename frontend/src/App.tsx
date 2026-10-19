@@ -45,7 +45,6 @@ function App() {
     try {
       setIsLoading(true);
       setError(null);
-      console.log("Sending request to backend:", requestBody);
       const response = await axios.post(`${apiUrl}/lint`, requestBody);
       setReviews(response.data);
     } catch (error) {
@@ -63,7 +62,7 @@ function App() {
             <span className="text-neutral-400"> &lt;/&gt; Code</span>
             <div className="flex items-center gap-2">
               <span className="text-neutral-400">Language:</span>
-              <select id="countries" className="block px-2 py-1 rounded-lg placeholder:text-body bg-neutral-700 border-r-6 border-neutral-700 " value={language} onChange={(e) => setLanguage(e.target.value)}>
+              <select id="language" className="block px-2 py-1 rounded-lg placeholder:text-body bg-neutral-700 border-r-6 border-neutral-700 " value={language} onChange={(e) => setLanguage(e.target.value)}>
                 {Object.entries(LANGUAGE_OPTIONS).map(([value, { label }]) => (
                   <option key={value} value={value}>{label}</option>
                 ))}
@@ -116,7 +115,7 @@ function App() {
           </div>
           <div className="absolute bottom-0 py-2 px-4 border-t border-neutral-700 w-full bg-neutral-800 flex justify-center items-center">
             {!isLoading ? (
-              <ReviewButton onClick={onClick} />
+              <ReviewButton onClick={onClick} disabled={code.trim() === ""} />
             ) : (
               <LoadingButton title="Reviewing..." />
             )}

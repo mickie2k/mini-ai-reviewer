@@ -1,9 +1,9 @@
-export function ReviewButton({ onClick }: { onClick: () => void }) {
+export function ReviewButton({ onClick, disabled }: { onClick: () => void, disabled?: boolean }) {
     return (
-        <button onClick={onClick} type="button" className="group relative inline-flex overflow-hidden text-xs w-full text-white bg-linear-to-br
+        <button onClick={onClick} disabled={disabled} type="button" className="group relative inline-flex overflow-hidden text-xs w-full text-white bg-linear-to-br
            from-purple-600 to-blue-500 focus:ring-2 focus:outline-none focus:ring-white/60
              font-medium rounded-full px-4 py-2.5 text-center justify-center leading-5 cursor-pointer items-center
-             transition ease-in-out hover:text-white/90 hover:from-purple-600 hover:to-blue-600
+             transition ease-in-out hover:text-white/90 hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-default disabled:hover:to-blue-500
             ">
             <svg
                 className=
