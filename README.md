@@ -6,11 +6,34 @@ Supported languages: **Go, Python, TypeScript, JavaScript, Java**.
 
 ![Demo website](docs/demo.png)
 
+## Tech Stack
+
 | Layer    | Stack                                                |
 | -------- | ---------------------------------------------------- |
 | Frontend | React 19, TypeScript, Vite, Tailwind CSS, CodeMirror |
 | Backend  | Go, Gin, OpenAI Go SDK, Anthropic Go SDK             |
 | Cache    | Redis (optional)                                     |
+
+## Architecture
+
+![Architecture](docs/architecture.png)
+
+The review handler validates and normalizes the code, checks the cache, builds the prompt with numbered lines, calls the LLM, parses and validates the JSON reply, then stores it in the cache.
+
+```
+backend/
+  main.go                  wiring: config, cache, LLM client, routes
+  internal/config          env loading and validation
+  internal/llm             Client interface + OpenAI and Anthropic implementations
+  internal/review          handler, prompt, response parsing (+ tests)
+  internal/cache           Client interface + Redis and no-op implementations
+frontend/src
+  App.tsx                  editor, language selector, results panel
+  components/              CommentCard, ErrorCard, buttons
+eval/                      evaluation dataset and results
+```
+
+---
 
 ## Quick start
 
@@ -63,21 +86,33 @@ The frontend reads `VITE_API_URL` at build time.
 | -------------- | ---------- | ------------------------------------------------ |
 | `VITE_API_URL` | (required) | Backend URL, for example `http://localhost:8080` |
 
-### AI gateway
+### LLM Integration
 
 `LLM_PROVIDER=openai` speaks the OpenAI Chat Completions API, so any OpenAI-compatible gateway works by changing only `LLM_URL`:
 
-```
-# OpenRouter
+# OpenAI API Directly
+
+LLM_PROVIDER=openai
+LLM_MODEL=claude-sonnet-5-5
+
+# Anthropic API Directly
+
+LLM_PROVIDER=openai
+LLM_MODEL=gpt-5.4
+
+# AI Gateway or Specific Endpoint eg. OpenRouter
+
 LLM_PROVIDER=openai
 LLM_URL=https://openrouter.ai/api/v1
 LLM_MODEL=anthropic/claude-sonnet-5-5
 
 # Local model (LM Studio)
+
 LLM_PROVIDER=openai
 LLM_URL=http://localhost:1234/v1
 LLM_MODEL=google/gemma-4-26b-a4b-it
-```
+
+````
 
 ## API
 
@@ -90,7 +125,7 @@ Request:
     "language": "python",
     "code": "def last_item(items):\n    return items[len(items)]"
 }
-```
+````
 
 `language` must be one of `golang`, `python`, `typescript`, `javascript`, `java`.
 
@@ -130,24 +165,7 @@ curl -X POST http://localhost:8080/lint \
 
 Liveness check. Returns `{"status": "ok"}`.
 
-## Architecture
-
-![Architecture](docs/architecture.png)
-
-The review handler validates and normalizes the code, checks the cache, builds the prompt with numbered lines, calls the LLM, parses and validates the JSON reply, then stores it in the cache.
-
-```
-backend/
-  main.go                  wiring: config, cache, LLM client, routes
-  internal/config          env loading and validation
-  internal/llm             Client interface + OpenAI and Anthropic implementations
-  internal/review          handler, prompt, response parsing (+ tests)
-  internal/cache           Client interface + Redis and no-op implementations
-frontend/src
-  App.tsx                  editor, language selector, results panel
-  components/              CommentCard, ErrorCard, buttons
-eval/                      evaluation dataset and results
-```
+---
 
 ## AI Review's Flow
 
