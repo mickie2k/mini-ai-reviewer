@@ -1,0 +1,17 @@
+all: false
+dir: "{{.InterfaceDir}}"
+filename: "mock_{{.InterfaceName | snakecase}}.go"
+force-file-write: false
+formatter: goimports
+log-level: info
+structname: "{{.Mock}}{{.InterfaceName}}"
+pkgname: "{{.SrcPackageName}}"
+recursive: false
+template: testify
+packages:
+    mini-ai-reviewer/internal/cache:
+        interfaces:
+            Client:
+    mini-ai-reviewer/internal/llm:
+        interfaces:
+            Client:

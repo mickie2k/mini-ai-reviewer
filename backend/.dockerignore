@@ -1,0 +1,26 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Version control and editor files
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+
+# Build artifacts, tests and coverage
+*.exe
+*.test
+*.out
+coverage.*
+*.coverprofile
+
+# Docker files (not needed inside the image)
+Dockerfile
+.dockerignore
+
+# Docs and mock tooling config
+*.md
+.mockery.yaml
